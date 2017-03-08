@@ -1,0 +1,6 @@
+#!/bin/bash
+currentnumber=$(ps -u greati | wc -l)
+
+if [ $currentnumber -gt $MAXPROCVAL ]; then
+        echo "Maximum number of processes ($MAXPROCVAL) reached!"
+fi

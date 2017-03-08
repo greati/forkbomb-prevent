@@ -8,9 +8,8 @@ echo "Informe o número máximo de processos por usuário: "
 read maxprocval
 sed -i.bak '/export MAXPROCVAL=*[0-9]/d' /etc/bash.bashrc
 echo "export MAXPROCVAL=$maxprocval" >> /etc/bash.bashrc
+sed -i.bak '/ulimit -u *[0-9]/d' /etc/bash.bashrc
+echo "ulimit -u $maxprocval" >> /etc/bash.bashrc
 export MAXPROCVAL=$maxprocval
 ulimit -u $maxprocval
 echo "Usuários comuns podem agora gerar no máximo $maxprocval processos."
-
-
-
