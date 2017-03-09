@@ -1,4 +1,5 @@
 #include <sys/resource.h>
+#include <sys/wait.h>
 #include <sys/time.h>
 #include <cstdio>
 #include <iostream>
@@ -25,19 +26,23 @@ int main(int argn, char * args[]) {
 
         if (pid == -1) {
                 if (errno == EAGAIN) {
-                        return 0;
+                        cout << "Limit of " << args[1] << " processes exceeded." << endl;
+                        cout << "Press Ctrl + C to finish execution!" << endl << endl;
+                        return EXIT_FAILURE;
                 }
         }
 
         pid = fork();
 
         if (pid == 0) {
-                sleep(1);
+                // Children
+                wait(NULL);
         } else if (pid > 0) {
+                // Parent
+                wait(NULL);
         }
 
     }
 
     return 0;
 }
-
