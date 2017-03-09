@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <array>
+#include <unistd.h>
 
 using namespace std;
 
@@ -19,8 +20,24 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-int main(void) {
+int main(int argn, char * args[]) {
 
+    int maxproc = atoi(args[1]);
+    std::string progname = args[0];
+    std::string commandCur = "ps -u | grep " + progname + "* | wc -l";
+
+    int current = stoi(exec(commandCur.c_str()));
+
+    if (current >= maxproc) {
+
+        cout << "Too many forks for this program!" << endl;
+        return 0;
+    }
+
+
+    while (true) fork();
+
+    /*
     std::string maxprocval = "";
     std::string currentprocnumber = "";
     bool showedonce = false;
@@ -45,7 +62,7 @@ int main(void) {
             cout << "No maximum value configured." << endl;
         }
     
-    }
+    }*/
 
     return 0;
 }
