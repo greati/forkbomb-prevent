@@ -1,3 +1,5 @@
+#include <sys/resource.h>
+#include <sys/time.h>
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -8,61 +10,34 @@
 
 using namespace std;
 
-std::string exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::shared_ptr<FILE> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) throw std::runtime_error("popen() failed!");
-    while (!feof(pipe.get())) {
-        if (fgets(buffer.data(), 128, pipe.get()) != NULL)
-            result += buffer.data();
-    }
-    return result;
-}
-
 int main(int argn, char * args[]) {
 
-    int maxproc = atoi(args[1]);
-    std::string progname = args[0];
-    std::string commandCur = "ps -u | grep " + progname + "* | wc -l";
+    struct rlimit rl;
 
-    int current = stoi(exec(commandCur.c_str()));
+    getrlimit(RLIMIT_NPROC, &rl);
 
-    if (current >= maxproc) {
+    rl.rlim_cur = atoi(args[1]);
 
-        cout << "Too many forks for this program!" << endl;
-        return 0;
-    }
+    setrlimit(RLIMIT_NPROC, &rl);
 
-
-    while (true) fork();
-
-    /*
-    std::string maxprocval = "";
-    std::string currentprocnumber = "";
-    bool showedonce = false;
-
+    pid_t pid = 0;
     while (true) {
- 
-        maxprocval = exec("echo $MAXPROCVAL");
 
-        if (maxprocval != "") {
-            cout << "Maximum processes configured: " << maxprocval << endl;
-
-            currentprocnumber = exec("ps -u | wc -l");
-
-            if (!showedonce && stoi(currentprocnumber) > stoi(maxprocval)) {
-                cout << "Process overflow! " << currentprocnumber << "/" << maxprocval << endl;
-                showedonce = true;
-            } else {
-                showedonce = false;
-            }
-
-        } else {
-            cout << "No maximum value configured." << endl;
+        if (pid == -1) {
+                if (errno == EAGAIN) {
+                        return 0;
+                }
         }
-    
-    }*/
+
+        pid = fork();
+
+        if (pid == 0) {
+                sleep(1);
+        } else if (pid > 0) {
+        }
+
+    }
 
     return 0;
 }
+
