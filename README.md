@@ -2,7 +2,7 @@
 This project aims to show how to avoid a system crash by a fork bomb.
 
 ## Programmer's view
-The preventbomb.cpp file is a C++ program which contains a fork bomb and some code to
+The `preventbomb.cpp` file is a C++ program which contains a fork bomb and some code to
 avoid the system crash. It uses the setrlimit function to give an upper bound on the
 number of processes the user can have.
 You can run it and check its effects just by compilling with
@@ -15,9 +15,9 @@ and executing with
 ./preventbomb [maximum number of processes]
 ```
 ## Administrator's view
-The script configmaxproc can be executed by an administrator in order to
+The script `configmaxproc` can be executed by an administrator in order to
 limit the number of processes for common users. Its effects are permanent
-because they are stored in the /etc/bash.bashrc file, which is
+because they are stored in the `/etc/bash.bashrc` file, which is
 executed every time a terminal is opened.
 
 You can run just by typing
