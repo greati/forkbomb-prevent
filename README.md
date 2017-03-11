@@ -1,5 +1,5 @@
 # forkbomb-prevent
-This project aims to show how to avoid a system crash by a fork bomb.
+This project aims to show how to avoid a Linux system crash by a fork bomb. 
 
 ## Programmer's view
 The `preventbomb.cpp` file is a C++ program which contains a fork bomb and some code to
