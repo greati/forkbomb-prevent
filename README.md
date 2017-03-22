@@ -34,4 +34,5 @@ for making changes available to the current terminal.
 ## Contributors ##
 ---
 Vitor Greati
+
 Vinicius Campos
